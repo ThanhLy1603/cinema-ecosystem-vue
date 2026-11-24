@@ -18,6 +18,7 @@ import { validateEmail, validateLoginPassword } from '@/lib/auth/validation';
 import { getErrorMessage, getFieldErrors } from '@/lib/common/apiError';
 import { useAuthStore } from '@/stores/useAuthStore';
 import type { LoginRequest, LoginResponse } from '@/types/auth/auth';
+import GoogleAuthSection from '../components/GoogleAuthSection.vue';
 import { PASSWORD_RESET_NOTICE } from '../utils/loginNotice';
 import { getPostLoginPath, getRedirectPath } from '../utils/redirect';
 
@@ -129,6 +130,8 @@ function handleSubmit(): void {
             {{ isPending ? 'Đang đăng nhập...' : 'Đăng nhập' }}
          </BaseButton>
       </form>
+
+      <GoogleAuthSection />
 
       <p class="mt-8 text-center text-sm text-ink-500">
          Chưa có tài khoản?

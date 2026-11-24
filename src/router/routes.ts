@@ -1,4 +1,4 @@
-import { Film, Info, MapPin, MessagesSquare, Popcorn, Tag, Ticket } from 'lucide-vue-next';
+import { Film, Info, MessagesSquare, Popcorn, Tag, Ticket } from 'lucide-vue-next';
 import { markRaw, type Component } from 'vue';
 import type { RouteComponent, RouteMeta, RouteRecordRaw } from 'vue-router';
 import MainLayout from '@/components/layout/MainLayout.vue';
@@ -6,6 +6,7 @@ import type { UserRole } from '@/types/auth/auth';
 
 const STAFF_ROLES: UserRole[] = ['ROLE_STAFF', 'ROLE_MANAGER', 'ROLE_ADMIN'];
 const ADMIN_ROLES: UserRole[] = ['ROLE_ADMIN', 'ROLE_MANAGER'];
+const ADMIN_ONLY_ROLES: UserRole[] = ['ROLE_ADMIN'];
 
 function comingSoonRoute(
    path: string,
@@ -71,13 +72,16 @@ export const routes: RouteRecordRaw[] = [
             MessagesSquare,
          ),
          comingSoonRoute('about', 'about', 'Giới thiệu', 'Trang giới thiệu về CinemaSphere sẽ sớm có mặt.', Info),
-         comingSoonRoute(
-            'cinemas',
-            'cinemas',
-            'Hệ thống rạp',
-            'Danh sách rạp theo thành phố đang được xây dựng.',
-            MapPin,
-         ),
+         {
+            path: 'cinemas',
+            name: 'cinemas',
+            component: () => import('@/features/cinemas/pages/CinemaListPage.vue'),
+         },
+         {
+            path: 'cinemas/:slug',
+            name: 'cinema-detail',
+            component: () => import('@/features/cinemas/pages/CinemaPublicPage.vue'),
+         },
          comingSoonRoute('tickets', 'tickets', 'Vé của tôi', 'Lịch sử đặt vé và mã QR sẽ sớm có mặt.', Ticket, {
             requiresAuth: true,
          }),
@@ -122,9 +126,35 @@ export const routes: RouteRecordRaw[] = [
             '',
             'admin-home',
             'Khu vực quản trị',
-            'Quản lý rạp, phim, suất chiếu, giá, người dùng và báo cáo sẽ được xây dựng tại đây.',
+            'Quản lý phim, suất chiếu, giá, người dùng và báo cáo sẽ được xây dựng tại đây.',
             Info,
          ),
+         {
+            path: 'cinemas',
+            name: 'admin-cinemas',
+            component: () => import('@/features/cinema-management/pages/CinemaManagementPage.vue'),
+         },
+         {
+            path: 'cinemas/new',
+            name: 'admin-cinema-create',
+            meta: { roles: ADMIN_ONLY_ROLES },
+            component: () => import('@/features/cinema-management/pages/CinemaCreatePage.vue'),
+         },
+         {
+            path: 'cinemas/facilities',
+            name: 'admin-cinema-facilities',
+            component: () => import('@/features/cinema-management/pages/FacilityManagementPage.vue'),
+         },
+         {
+            path: 'cinemas/:cinemaId',
+            name: 'admin-cinema-detail',
+            component: () => import('@/features/cinema-management/pages/CinemaDetailPage.vue'),
+         },
+         {
+            path: 'halls/:hallId/seat-map',
+            name: 'admin-hall-seat-map',
+            component: () => import('@/features/cinema-management/pages/SeatMapEditorPage.vue'),
+         },
       ],
    },
    {

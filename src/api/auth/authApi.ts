@@ -2,6 +2,7 @@ import type { AxiosResponse } from 'axios';
 import axiosInstance from '@/api/axiosClient';
 import type {
    ForgotPasswordRequest,
+   GoogleLoginRequest,
    LoginRequest,
    LoginResponse,
    RefreshTokenResponse,
@@ -24,6 +25,13 @@ export async function login(loginRequest: LoginRequest): Promise<LoginResponse> 
    const axiosResponse: AxiosResponse<ApiResponse<LoginResponse>> = await axiosInstance.post<
       ApiResponse<LoginResponse>
    >('/auth/login', loginRequest);
+   return axiosResponse.data.data;
+}
+
+export async function loginWithGoogle(googleLoginRequest: GoogleLoginRequest): Promise<LoginResponse> {
+   const axiosResponse: AxiosResponse<ApiResponse<LoginResponse>> = await axiosInstance.post<
+      ApiResponse<LoginResponse>
+   >('/auth/google', googleLoginRequest);
    return axiosResponse.data.data;
 }
 

@@ -1,0 +1,14 @@
+import { useQuery, type UseQueryReturnType } from '@tanstack/vue-query';
+import { getSeatTypes } from '@/api/cinema/cinemaApi';
+import { SEAT_TYPES_KEY } from '@/lib/cinema/cinemaQueryKeys';
+import type { SeatType } from '@/types/cinema/cinema';
+
+const SEAT_TYPES_STALE_TIME_MS: number = 10 * 60 * 1000;
+
+export function useSeatTypes(): UseQueryReturnType<SeatType[], Error> {
+   return useQuery<SeatType[]>({
+      queryKey: SEAT_TYPES_KEY,
+      queryFn: getSeatTypes,
+      staleTime: SEAT_TYPES_STALE_TIME_MS,
+   });
+}

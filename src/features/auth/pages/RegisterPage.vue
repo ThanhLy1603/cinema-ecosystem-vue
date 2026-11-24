@@ -24,6 +24,7 @@ import {
 import { getErrorCode, getErrorMessage, getFieldErrors } from '@/lib/common/apiError';
 import { useAuthStore } from '@/stores/useAuthStore';
 import type { LoginResponse, RegisterRequest } from '@/types/auth/auth';
+import GoogleAuthSection from '../components/GoogleAuthSection.vue';
 import PasswordStrength from '../components/PasswordStrength.vue';
 import { getRedirectPath } from '../utils/redirect';
 
@@ -186,6 +187,8 @@ function handleSubmit(): void {
             {{ isPending ? 'Đang tạo tài khoản...' : 'Tạo tài khoản' }}
          </BaseButton>
       </form>
+
+      <GoogleAuthSection />
 
       <p class="mt-8 text-center text-sm text-ink-500">
          Đã có tài khoản?
