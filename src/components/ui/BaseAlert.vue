@@ -1,24 +1,38 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { CircleAlert, CircleCheck, Info } from 'lucide-vue-next';
+import { computed, type Component } from 'vue';
 import { cn } from '@/lib/common/utils';
 
-interface AlertProps {
-   variant?: 'error' | 'success' | 'info';
+type AlertVariant = 'error' | 'success' | 'info';
+
+interface BaseAlertProps {
+   variant?: AlertVariant;
 }
 
-const props = withDefaults(defineProps<AlertProps>(), { variant: 'info' });
+const props = withDefaults(defineProps<BaseAlertProps>(), { variant: 'info' });
 
-const VARIANT_CLASSES: Record<'error' | 'success' | 'info', string> = {
-   error: 'border-red-200 bg-red-50 text-red-700',
-   success: 'border-emerald-200 bg-emerald-50 text-emerald-700',
-   info: 'border-sky-200 bg-sky-50 text-sky-700',
+const VARIANT_CLASSES: Record<AlertVariant, string> = {
+   error: 'border-danger-200 bg-danger-50 text-danger-800',
+   success: 'border-emerald-200 bg-emerald-50 text-emerald-800',
+   info: 'border-accent-200 bg-accent-50 text-ink-800',
 };
 
-const alertClass = computed<string>(() => cn('rounded-lg border px-3 py-2.5 text-sm', VARIANT_CLASSES[props.variant]));
+const VARIANT_ICONS: Record<AlertVariant, Component> = {
+   error: CircleAlert,
+   success: CircleCheck,
+   info: Info,
+};
+
+const alertClass = computed<string>(() =>
+   cn('flex items-start gap-3 rounded-lg border px-3.5 py-2.5 text-sm font-medium', VARIANT_CLASSES[props.variant]),
+);
 </script>
 
 <template>
-   <div :class="alertClass" :role="variant === 'error' ? 'alert' : 'status'">
-      <slot />
+   <div :role="variant === 'error' ? 'alert' : 'status'" :class="alertClass">
+      <component :is="VARIANT_ICONS[variant]" class="mt-0.5 size-[18px] shrink-0" aria-hidden="true" />
+      <div class="leading-relaxed">
+         <slot />
+      </div>
    </div>
 </template>

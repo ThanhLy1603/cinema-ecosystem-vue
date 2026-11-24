@@ -1,30 +1,37 @@
 <script setup lang="ts">
-import { RouterLink, type RouteLocationRaw } from 'vue-router';
+import { ArrowLeft } from 'lucide-vue-next';
+import type { Component } from 'vue';
+import BaseLinkButton from '@/components/ui/BaseLinkButton.vue';
 
 interface ComingSoonPageProps {
    title: string;
-   description?: string;
-   backTo?: RouteLocationRaw;
+   description: string;
+   icon: Component;
+   backTo?: string;
    backLabel?: string;
 }
 
-withDefaults(defineProps<ComingSoonPageProps>(), {
-   description: 'Tính năng này đang được xây dựng.',
-   backTo: () => ({ name: 'home' }),
-   backLabel: 'Quay lại',
-});
+withDefaults(defineProps<ComingSoonPageProps>(), { backTo: '/', backLabel: 'Về trang chủ' });
 </script>
 
 <template>
-   <section class="mx-auto flex max-w-xl flex-col items-center gap-4 px-4 py-24 text-center">
-      <span class="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">Sắp ra mắt</span>
-      <h1 class="text-2xl font-semibold text-slate-900">{{ title }}</h1>
-      <p class="text-slate-600">{{ description }}</p>
-      <RouterLink
-         :to="backTo"
-         class="rounded-lg border border-slate-300 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
-      >
-         {{ backLabel }}
-      </RouterLink>
+   <section class="mx-auto grid min-h-[60vh] max-w-2xl place-items-center px-4 py-20 text-center">
+      <div class="space-y-6">
+         <span
+            class="mx-auto grid size-20 place-items-center rounded-3xl bg-gradient-to-br from-brand-50 to-accent-100 text-brand-600 shadow-card ring-1 ring-brand-100"
+         >
+            <component :is="icon" class="size-10" aria-hidden="true" />
+         </span>
+         <div class="space-y-2">
+            <span
+               class="inline-block rounded-full bg-accent-100 px-3 py-1 text-xs font-bold uppercase tracking-wider text-accent-600"
+            >
+               Sắp ra mắt
+            </span>
+            <h1 class="text-3xl font-extrabold tracking-tight text-ink-900">{{ title }}</h1>
+            <p class="mx-auto max-w-md text-ink-500">{{ description }}</p>
+         </div>
+         <BaseLinkButton :to="backTo" variant="secondary" :icon="ArrowLeft">{{ backLabel }}</BaseLinkButton>
+      </div>
    </section>
 </template>

@@ -15,7 +15,7 @@ npm install
 npm run dev
 ```
 
-Dev server chạy ở `http://localhost:5173`, proxy `/api` tới `http://localhost:8080`. Trình duyệt luôn gọi cùng origin nên cookie HttpOnly SameSite=Strict hoạt động bình thường.
+Dev server chạy ở `http://localhost:5173`, proxy `/api` tới backend Axum ở `http://localhost:8081`. Trình duyệt luôn gọi cùng origin nên cookie HttpOnly SameSite=Strict hoạt động bình thường.
 
 | Lệnh                 | Việc                         |
 | -------------------- | ---------------------------- |
@@ -35,10 +35,10 @@ src/
 │   └── <module>/            còn lại chia theo module backend: auth/, cinema/, movie/, showtime/, booking/, ...
 ├── assets/                  main.css (chỉ import Tailwind)
 ├── components/
-│   ├── ui/                  BaseButton, BaseTextField, BaseAlert
-│   ├── layout/              MainLayout, AuthLayout, StaffLayout, AdminLayout
-│   ├── common/              FullPageSpinner, ForbiddenPage, ComingSoonPage
-│   └── brand/               Logo (khi có)
+│   ├── ui/                  BaseButton, BaseLinkButton, BaseTextField, BaseSelectField, BaseAlert
+│   ├── layout/              MainLayout (AppNavbar, UserMenu, CitySelector, AppFooter), AuthLayout (AuthShowcase), StaffLayout, AdminLayout
+│   ├── common/              FullPageSpinner, UserAvatar, ForbiddenPage, ComingSoonPage
+│   └── brand/               BrandLogo (flat, cinema)
 ├── features/                mỗi feature chia thư mục con theo vai trò của file
 │   └── <feature>/
 │       ├── pages/           trang gắn với route (XxxPage.vue)
@@ -54,7 +54,13 @@ src/
 └── types/<module>/          interface mirror DTO backend: common/, auth/, cinema/, ...
 ```
 
-Hiện có sẵn: `auth` (đăng nhập, khôi phục phiên, guard theo role), `home`. Các feature khác thêm vào `features/<tên>/` theo cùng khuôn.
+Hiện có sẵn: `auth` (đăng nhập, đăng ký, quên và đặt lại mật khẩu, xác thực email, hồ sơ, khôi phục phiên, guard theo role), `home`. Các mục menu chưa có dữ liệu (Phim, Rạp, Bắp nước, Khuyến mãi, Cộng đồng, Vé của tôi) hiện là trang "Sắp ra mắt". Các feature khác thêm vào `features/<tên>/` theo cùng khuôn.
+
+## Giao diện
+
+Giao diện giống frontend React: cùng token màu, hoạt ảnh và bo góc trong `src/assets/main.css`. Khu khách, xác thực và nhân viên bọc trong lớp `theme-shinkai` (xanh lá), khu quản trị dùng bộ token mặc định (xanh dương). Component nền đặt tên `Base*` vì ESLint của Vue không cho tên một từ. Mọi ô chọn dùng `BaseSelectField` (có tìm kiếm không dấu và nút xóa), không dùng thẻ `<select>`.
+
+Chưa có: đăng nhập Google, tải ảnh đại diện lên (hiện dán đường dẫn https), các trang nghiệp vụ.
 
 ## Quy ước
 

@@ -7,6 +7,8 @@ const authStore = useAuthStore();
 </script>
 
 <template>
-   <FullPageSpinner v-if="authStore.isLoading" />
+   <div v-if="authStore.isLoading" class="theme-shinkai app-backdrop flex min-h-dvh items-center justify-center">
+      <FullPageSpinner />
+   </div>
    <RouterView v-else />
 </template>
